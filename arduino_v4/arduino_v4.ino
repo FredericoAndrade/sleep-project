@@ -105,8 +105,7 @@ void loop() {
     int deviation = prev-data;
     Serial.print(data, prev);
 
-
-
+    // make it work
 
     // Rotate CCW, then CW
     for (int i = 0; i < n; i++)
