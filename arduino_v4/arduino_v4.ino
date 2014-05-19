@@ -1,11 +1,7 @@
-//const int dataset[132]={
-//  0.19, 0.02, 0.51, 0.64, 0.54, 0.54, 0.54, 0.54, 0.54, 0.54, 0.57, 0.57, 0.59, 0.54, 0.79, 0.56, 0.49, 0.49, 0.49, 0.49, 0.49, 0.49, 0.49, 0.49, 0.49, 0.49, 0.49, 0.49, 0.47, 0.70, 0.51, 0.90, 0.79, 0.41, 0.65, 0.82, 0.54, 0.63, 0.72, 0.65, 0.56, 0.72, 0.56, 0.60, 0.49, 0.49, 0.82, 0.42, 0.54, 0.54, 0.45, 0.54, 0.42, 0.54, 0.44, 0.44, 0.48, 0.39, 0.65, 0.34, 0.68, 0.39, 0.61, 0.65, 0.54, 0.71, 0.45, 0.49, 0.58, 0.47, 0.46, 0.50, 0.46, 0.40, 0.56, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.37, 0.67, 0.57, 0.46, 0.67, 0.46, 0.68, 0.61, 0.70, 0.37, 0.51, 0.37, 0.56, 0.48, 0.59, 0.66, 0.52, 0.67, 0.48, 0.75, 0.99, 0.70, 0.42, 0.53, 0.44, 0.44, 0.44, 0.44, 0.44, 0.44, 0.44, 0.44, 0.44, 0.44, 0.44, 0.70, 0.80, 0.41, 0.65, 0.47, 0.58, 0.48, 0.54, 0.41, 0.41, 0.56};
-// physical size of sculpture in inches
 const int graphData[132] ={
   0,1,5,6,5,5,5,5,5,5,6,6,6,5,8,6,5,5,5,5,5,5,5,5,5,5,5,5,5,7,5,9,8,4,7,8,5,6,7,7,6,7,6,6,5,5,8,4,5,5,4,5,4,5,4,4,5,4,6,3,7,4,6,7,5,7,5,5,6,5,5,5,5,4,6,5,5,5,5,5,5,5,5,5,5,5,4,7,6,5,7,5,7,6,7,4,5,4,6,5,6,7,5,7,5,8,10,7,4,5,4,4,4,4,4,4,4,4,4,4,4,7,8,4,6,5,6,5,5,4,4,6};
+// physical size of sculpture in inches
 const int availableHeight = 10;
-
-//int graphData[132];
 // define number of motors
 const int motorQuantity = 22;
 // define the first pin
@@ -17,26 +13,28 @@ int motorPin[totalPins];
 // multiplexing matrix
 // [22][4] matrix where each row is a motor and each column is a pin
 int motors[motorQuantity][4] = {
-  {1,5,11,15},
-  {1,6,11,16},
-  {1,7,11,17},
-  {1,8,11,18},
-  {1,9,11,19},
-  {2,5,12,15},
-  {2,6,12,16},
-  {2,7,12,17},
-  {2,8,12,18},
-  {2,9,12,19},
-  {3,5,13,15},
-  {3,6,13,16},
-  {3,7,13,17},
-  {3,8,13,18},
-  {3,9,13,19},
-  {4,5,14,15},
-  {4,6,14,16},
-  {4,7,14,17},
-  {4,8,14,18},
-  {4,9,14,19}};
+  {22,25,32,36},
+  {22,27,32,37},
+  {22,28,32,38},
+  {22,29,32,39},
+  {22,30,32,40},
+  {22,31,32,41},
+  {23,25,33,36},
+  {23,27,33,37},
+  {23,28,33,38},
+  {23,29,33,39},
+  {23,30,33,40},
+  {23,31,33,41},
+  {24,25,34,36},
+  {24,27,34,37},
+  {24,28,34,38},
+  {24,29,34,39},
+  {24,30,34,40},
+  {24,31,34,41},
+  {25,25,35,36},
+  {25,27,35,37},
+  {25,28,35,38},
+  {25,29,35,39}};
 // counters
 int count = 0;
 int internalCount = 0;
@@ -56,7 +54,6 @@ void setup() {
   // Delay here to have time to open the console monitor in peace
   delay(1000);
   //  Serial.print("Initializing. ");
-  Serial.print(n);
   pinInit();
   for (int init = 0; init < totalPins; init++)
   {
@@ -112,7 +109,7 @@ void counterClockWise(int *array) {
   }
 
   //  Serial.print(count);
-  delay(delayTime);
+  delay(1);
 }
 
 // same as counter-clock-wise motion, with the exception of the digital write
@@ -131,62 +128,75 @@ void clockWise(int *array) {
   }
 
   //  Serial.print(count);
-  delay(delayTime);
+  delay(1);
 }
 
 void loop() {
+  Serial.print(" Cycle ");
   Serial.print(cycle);
-  Serial.print(" cycle || ");
+  Serial.println(".");
   // Keep track of motor number
   for (int motor = 0; motor < 22; motor++)
   {
   int data = graphData[motor+cycle];
   int prev = graphData[motor+cycle-1];
-  int deviation = prev-data;
-  Serial.print("Motor_");
+  int deviation = data-prev;
+  Serial.print("  Motor_");
   Serial.print(motor);
-  Serial.print(" rotations = ");
-  Serial.print(inch*deviation);
-  Serial.print(". ");
+  Serial.print(". Data: ");
+  Serial.print(data);
 
-  if (deviation > 0)
+  if (data != 0 && deviation > 0)
   {
+    Serial.print(". Deviation = ");
+    Serial.print(deviation);
+    Serial.print(". Total Rotations: ");
+    Serial.print(inch*deviation);
+    Serial.print(". Rotation: ");
     for (int i = 0; i < inch*deviation; i++)
     {
       // CCW for n duration
       // Clarify how motors[motor] works
       counterClockWise(motors[motor]);
+      Serial.print(i);
+      Serial.print(",");
     }
   }
-
-  // make it work
-
-  // Rotate CCW, then CW
-  //  for (int i = 0; i < n; i++)
-  //  {
-  //    // CCW for n duration
-  //    // Clarify how motors[motor] works
-  //    counterClockWise(motors[motor]);
-  //  }
-
-  //  for (int b=0; b < n; b++)
-  //  {
-  //    // CW for n duration
-  //    clockWise(motors[motor]);
-  //  }
-
-  //  Serial.print(motor);
+  
+  if (data != 0 && deviation < 0)
+  {
+    Serial.print(". Deviation = ");
+    Serial.print(deviation);
+    Serial.print(". Total Rotations: ");
+    Serial.print(inch*deviation);
+    Serial.print(". Rotation: ");
+    for (int i = inch*deviation; i < 0; i++)
+    {
+      // CCW for n duration
+      // Clarify how motors[motor] works
+      clockWise(motors[motor]);
+      Serial.print(i);
+      Serial.print(",");
+    }
+  }
+  
+  if (data = 0)
+  {
+    Serial.print(". Nothing to do!");
   }
 
-  //  Serial.println("loop");
+  
+    Serial.println(" ");
+  }
 
-  delay(1000);
+//  delay(1000);
 
   // Keep track of cycle number
   cycle++;
 
   Serial.println("End cycle");
 }
+
 
 
 
